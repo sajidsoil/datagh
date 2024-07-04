@@ -1,0 +1,36 @@
+---
+title: "HSD"
+author: "Sajid"
+date: "2023-07-16"
+output: html_document
+---
+
+```{r}
+library(agricolae)
+library(tidyverse)
+```
+```{r}
+dataFolder<-"E:/#Journal_paper_prpn/Crop_yield/Yield_data/"
+ta.stb14 = read_csv(paste0(dataFolder, "TA-B-2yr.csv"))
+```
+```{r}
+aov1<-aov(StB14~rep+treat+rep*treat, data=ta.stb14)
+summary(aov1)
+```
+```{r}
+out <- HSD.test(aov1,"treat", group=TRUE,console=TRUE,
+main="Straw B with different treat")
+#stargraph
+# Variation range: max and min
+plot(out)
+#endgraph
+```
+
+
+```{r}
+# compare pair of treatment means
+out<-HSD.test(aov1,"treat", group=FALSE)
+print(out$comparison)
+```
+
+
